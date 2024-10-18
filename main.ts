@@ -1,4 +1,5 @@
 export { add } from "@/utils/add.ts";
+export { compact } from "@/utils/compact.ts";
 export { jsonClone } from "@/utils/jsonClone.ts";
 export { minmax } from "@/utils/minmax.ts";
 export { stringToColor } from "@/utils/stringToColor.ts";
