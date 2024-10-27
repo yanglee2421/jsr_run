@@ -8,6 +8,9 @@ export { timeout } from "@/utils/timeout.ts";
 export { toStringTag } from "@/utils/toStringTag.ts";
 export { uniqBy } from "@/utils/uniqBy.ts";
 
+// #region Array
+export { chunk } from "@/array/chunk.ts";
+
 export function withinTruthy(list: unknown[]): boolean {
   return list.some(Boolean);
 }
@@ -15,3 +18,4 @@ export function withinTruthy(list: unknown[]): boolean {
 export function withoutFalsy(list: unknown[]): boolean {
   return list.every(Boolean);
 }
+// #endregion
