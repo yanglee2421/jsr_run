@@ -7,10 +7,10 @@ export function chunk<TItem>(list: TItem[], size: number): Array<TItem[]> {
   let firstIndexInNextLine = 0;
 
   while (firstIndexInNextLine < list.length) {
-    result[result.length] = list.slice(
+    result.push(list.slice(
       firstIndexInNextLine,
-      (firstIndexInNextLine += size)
-    );
+      firstIndexInNextLine += size,
+    ));
   }
 
   return result;
