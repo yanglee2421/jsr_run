@@ -47,7 +47,7 @@ export function groupBy<TItem>(
   fn: keyof TItem | ((i: TItem) => unknown),
 ): Record<string, TItem[]> {
   return Object.fromEntries(
-    Object.entries(collection).reduce((map, [, i]) => {
+    Object.values(collection).reduce((map, i) => {
       const key = typeof fn === "function" ? fn(i) : Reflect.get(Object(i), fn);
       const vals = map.get(key) || [];
 
