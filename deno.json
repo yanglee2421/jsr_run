@@ -3,10 +3,11 @@
     "dev": "deno run --watch -A src/dev.ts"
   },
   "name": "@yotulee/run",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "exports": {
     ".": "./dist/main.ts",
-    "./lib": "./dist/lib.ts"
+    "./lib": "./dist/lib.ts",
+    "./polyfill": "./dist/polyfill.ts"
   },
   "imports": {
     "@webview/webview": "jsr:@webview/webview@^0.9.0",
