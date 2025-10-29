@@ -3,7 +3,7 @@
     "dev": "deno run --watch -A src/dev.ts"
   },
   "name": "@yotulee/run",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "exports": {
     ".": "./dist/main.ts",
     "./lib": "./dist/lib.ts",
