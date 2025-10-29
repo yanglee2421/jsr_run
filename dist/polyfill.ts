@@ -2,10 +2,10 @@ export const minmax = (value: number, min: number, max: number): number => {
   return Math.min(Math.max(value, min), max);
 };
 
-type Callback<TArgs extends unknown[], TReturn> = (...args: TArgs) => TReturn;
+type CallbackFn<TArgs extends unknown[], TReturn> = (...args: TArgs) => TReturn;
 
 export const promiseTry = <TArgs extends unknown[], TReturn>(
-  callback: Callback<TArgs, TReturn>,
+  callback: CallbackFn<TArgs, TReturn>,
   ...args: TArgs
 ): Promise<TReturn> => {
   return new Promise<TReturn>((resolve) => resolve(callback(...args)));
@@ -25,9 +25,9 @@ export const chunk = <TElement>(
 };
 
 export const debounce = <TArgs extends unknown[]>(
-  fn: (...args: TArgs) => void,
+  fn: CallbackFn<TArgs, void>,
   delay = 0
-) => {
+): CallbackFn<TArgs, void> => {
   let timer: number;
   return (...args: TArgs) => {
     clearTimeout(timer);
