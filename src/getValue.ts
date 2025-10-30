@@ -1,58 +1,72 @@
-export function getValue(...params: number[]) {
-  const list = [...new Set(params)];
-  const result: number[] = [];
+import { isWithinRange } from "#dist/polyfill.ts";
 
-  const startPoint = list.find((i) => {
-    const restList = list.filter((el) => el !== i);
-    const centerExcepted = i + 10;
-    const endExcepted = centerExcepted + 5;
+type CellValue = null | number;
+type CellValueTuple = [CellValue, CellValue, CellValue];
 
-    const centerValue = restList.find((item) =>
-      isInRange(item, centerExcepted - 3, centerExcepted + 3)
-    );
+const getCellValue = (first: number, elements: number[]): CellValueTuple => {
+  const isFirstValid = elements.includes(first);
 
-    const endValue = restList.find((item) =>
-      isInRange(item, endExcepted - 3, endExcepted + 3)
-    );
-
-    if (centerValue && endValue) {
-      result[0] = i;
-      result[1] = centerValue;
-      result[2] = endValue;
-      return true;
-    }
-
-    return false;
-  });
-
-  if (!startPoint) {
-    return getFallback(...params);
+  if (!isFirstValid) {
+    return [null, null, null];
   }
 
-  return result;
-}
+  const second = params.find((i) => {
+    const excepted = first + 10;
+    return isWithinRange(i, excepted - 3, excepted + 3);
+  });
 
-function isInRange(value: number, min: number, max: number) {
-  return value === minmax(value, min, max);
-}
+  if (!second) {
+    return [first, null, null];
+  }
 
-function minmax(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value));
-}
+  const third = params.find((i) => {
+    const excepted = second + 5;
+    return isWithinRange(i, excepted - 3, excepted + 3);
+  });
 
-function getFallback(...params: number[]) {
-  const list = [...new Set(params)];
-  const minValue = Math.min(...list);
-  const maxValue = Math.max(...list);
-  const midExcepted = ((minValue + maxValue) / 2) + 2.5;
-  const midValue =
-    list.sort((p, n) =>
-      Math.abs(p - midExcepted) - Math.abs(n - midExcepted)
-    )[0];
+  if (!third) {
+    return [first, second, null];
+  }
 
-  return [minValue, midValue, maxValue];
-}
+  return [first, second, third];
+};
+
+const numbersToCellValueMap = (params: number[]) => {
+  const numberToCellValueMap = new Map<number, CellValueTuple>();
+
+  return params.reduce((numberToCellValueMap, i) => {
+    const cellValues = getCellValue(i, params);
+    numberToCellValueMap.set(i, cellValues);
+
+    return numberToCellValueMap;
+  }, numberToCellValueMap);
+};
+
+const getIsOk = (params: number[]) => {
+  const numberToCellValueMap = numbersToCellValueMap(params);
+  const isOk = [...numberToCellValueMap.entries()].some(([, tuple]) => {
+    return tuple.every((value) => typeof value === "number");
+  });
+  return [isOk, numberToCellValueMap] as const;
+};
+
+// const params = [185, 195, 196, 200];
+// const params = [209, 210, 198, 216];
+// const params = [198, 209, 210, 209];
+// const params = [210];
+// const params = [190, 206, 200, 189];
+// const params = [199, 189, 206];
+const params = [205, 212, 194];
+const [isOk, numberToCellValueMap] = getIsOk(params);
 
 console.log(
-  getValue(185, 196, 201, 185),
+  `Validation passed with cursors: ${JSON.stringify(
+    Object.fromEntries(numberToCellValueMap.entries()),
+    null,
+    2
+  )}`
+);
+
+console.log(
+  `Validation result: ${isOk ? "OK" : "FAIL"} for params: ${params.join(", ")}`
 );

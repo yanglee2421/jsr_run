@@ -2,7 +2,11 @@ export const minmax = (value: number, min: number, max: number): number => {
   return Math.min(Math.max(value, min), max);
 };
 
-export const inRange = (value: number, min: number, max: number): boolean => {
+export const isWithinRange = (
+  value: number,
+  min: number,
+  max: number
+): boolean => {
   return Object.is(value, minmax(value, min, max));
 };
 
